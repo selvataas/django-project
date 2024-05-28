@@ -3,12 +3,11 @@ from django.shortcuts import render
 
 
 
-
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'pages/index.html')
 
-def hakkimizda(request):
-    return HttpResponse('hakkımızda sayfası')
+def about(request):
+    return render(request, 'pages/about.html')
 
-def iletisim(request):
-    return HttpResponse('iletişim sayfası')
+def contact(request):
+    return render(request, 'pages/contact.html')
