@@ -1,5 +1,11 @@
 {%  extends "layout.html" %}
 
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'courses/css/style.css' %}">
+{% endblock  %}
+
 {% block page_title  %}
     kurslar
 {% endblock  %}
@@ -12,10 +18,13 @@
             </div>
             <div class="col-9">
                 {% for course in courses %}
-                     {% include 'courses/partials/_course.html' %}
+                        {% include 'courses/partials/_course.html' %}
                 {% endfor %}
             </div>
         </div>
     </div>
 {% endblock %}
 
+{% block js_files %}
+    <script src="{% static 'courses/js/scripts.js' %}"></script>
+{% endblock  %}
