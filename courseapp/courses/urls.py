@@ -9,3 +9,6 @@ urlpatterns = [
     path('kategori/<str:category_name>', views.getCoursesByCategory, name='courses_by_category'),
 
 ]
+
+
+

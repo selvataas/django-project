@@ -2,6 +2,7 @@ from datetime import date,datetime
 from django.http import HttpResponse, HttpResponseNotFound,HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from .models import Course, Category
 
 data = {
     "programlama":"programlama kategorisine ait kurslar",
@@ -49,8 +50,8 @@ db = {
 
 def index(request):
     # list comphension
-    kurslar = [course for course in db["courses"] if course["isActive"]==True]
-    kategoriler = db["categories"]
+    kurslar = Course.objects.filter(isActive=1)
+    kategoriler = Category.objects.all()
 
     # for kurs in db["courses"]:
     #     if kurs ["isActive"] == True:
