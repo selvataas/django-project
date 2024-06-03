@@ -25,6 +25,3 @@ class Course(models.Model):
         return f"{self.title}"
     
 
-
-
-    

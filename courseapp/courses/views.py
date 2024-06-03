@@ -1,6 +1,6 @@
 from datetime import date,datetime
 from django.http import HttpResponse, HttpResponseNotFound,HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from .models import Course, Category
 
@@ -64,37 +64,50 @@ def index(request):
 
 
 
-    return render(request, 'courses/index.html', {
+def details(request, slug):
+    course = get_object_or_404(Course, slug=slug) 
+
+    context = {
+        'course ': course
+    }
+    return render(request, 'courses/details.html', context)
+
+def getCoursesByCategory(request, slug):
+    kurslar = Course.objects.filter(category__slug=slug, isActive=True)
+    kategoriler = Category.objects.all()
+
+    return render(request, 'courses/index.html',{
         'categories': kategoriler,
-        'courses': kurslar
-        
+        'courses':kurslar
     })
 
-def details(request, kurs_adi):
-    return HttpResponse(f"{kurs_adi} detay sayfası")
 
-def getCoursesByCategory(request, category_name):
-    try:
-        category_text = data[category_name];
-        return render(request, 'courses/kurslar.html', {
-            'category': category_name,
-            'category_text': category_text
 
-        })
-    except:
-         return HttpResponseNotFound("<h1>yanlış kategori seçimi</h1>")
 
-def  getCoursesByCategoryId(request, category_id):
-    # 1-2-3 =>
-    category_list = list(data.keys()) 
-    if(category_id > len(category_list)):
-        return HttpResponseNotFound("yanlış kategori seçimi")
+
+
+
+    # try:
+    #     category_text = data[category_name];
+    #     return render(request, 'courses/kurslar.html', {
+    #         'category': category_name,
+    #         'category_text': category_text
+
+    #     })
+    # except:
+    #      return HttpResponseNotFound("<h1>yanlış kategori seçimi</h1>")
+
+# def  getCoursesByCategoryId(request, category_id):
+#     # 1-2-3 =>
+#     category_list = list(data.keys()) 
+#     if(category_id > len(category_list)):
+#         return HttpResponseNotFound("yanlış kategori seçimi")
     
-    category_name = category_list[category_id-1]
+#     category_name = category_list[category_id-1]
 
-    redirect_url = reverse('courses_by_category', args=[category_name])
+#     redirect_url = reverse('courses_by_category', args=[category_name])
 
-    return redirect(redirect_url)
+#     return redirect(redirect_url)
 
 
 

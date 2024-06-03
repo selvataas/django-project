@@ -1,12 +1,19 @@
+{% comment %} <div class="list-group">
+    {% for category in categories %}
+        <a href="{% url 'courses_by_category' category.slug %}" class="list-group-item list-group-item-action">
+            {{ category.name | title }}
+        </a>
+    {% endfor %}
+</div> {% endcomment %}
+
 <div class="list-group">
     {% for category in categories %}
-        <a href="{% url 'courses_by_category' category.slug %}"
+        <a href="{% url 'courses_by_category', category.slug %}"
         class="list-group-item list-group-item-action">
         {{category.name | title}}
     </a>
     {% endfor %}
-</div>
-
+</div> 
 
 
 
