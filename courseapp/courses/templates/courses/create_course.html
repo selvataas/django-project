@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.min.css" />
+    <title>CourseApp | 
+        Create Course
+    </title>
+</head>
+<body>
+   
+    <!--navbar-->
+    <nav class= "navbar navbar-expand-lg bg-primary navbar-dark">
+        <div class="container">
+           <a href="/kurslar/" class="navbar-brand">Course app</a>
+
+           <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                 <a href="/kurslar/" class="nav-link">Kurslar</a>           
+              </li>
+              <li class="nav-item">
+                <a href="/kurslar/create-course" class="nav-link">Kurs Ekle</a>           
+             </li>
+            </ul>
+
+            <form class="d-flex" action="{% url 'search' %}">
+                <input class= "form-control me-1" type="text" name="q" placeholder="Anahtar Kelime">
+                <button type="submit" class="btn btn-secondary">Arama</button>
+            </form>
+
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+                <form action="/kurslar/create-course" method=POST>
+                    {% csrf_token %}
+                    <div class = "mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">description</label>
+                        <textarea name="description" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imageUrl" class="form-label">imageUrl</label>
+                        <input type="text" name="imageUrl" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="slug" class="form-label">slug</label>
+                        <input type="text" name="slug" class="form-control">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isActive" class="form-check-input">
+                        <label for="isActive" class="form-check-label">isActive</label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isHome" class="form-check-input">
+                        <label for="isHome" class="form-check-label">isHome</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                 </form>
+                </div>
+                <div>
+             </div>
+
+<script src="/static/js/bootstrap.min.js" ></script>
+
+<script src="/static/courses/js/script.js" ></script>
+
+
+            
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/js/bootstrap.min.js" ></script>
+
+</body>
+</html>  

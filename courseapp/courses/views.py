@@ -59,6 +59,27 @@ def index(request):
          'courses': kurslar
      })
 
+def create_course(request):
+    if request.method == "POST":
+        title=request.POST["title"]
+        imageUrl=request.POST["imageUrl"]
+        description = request.POST["description"]
+        slug = request.POST["slug"]
+        isActive = request.POST.get("isActive", False)
+        isHome = request.POST.get("isHome", False)
+        print(title, description, slug, isActive, isHome)
+
+        if isActive == "on":
+            isActive = True
+        
+        if isHome == "on":
+            isHome = True
+
+        kurs=Course(title=title, imageUrl=imageUrl, description=description, slug=slug, isActive=isActive, isHome=isHome)
+        kurs.save()
+        return redirect("/kurslar")
+    return render(request, "courses/create_course.html")
+
 def search(request):
     if "q" in request.GET and request.GET["q"] != "": 
         q = request.GET["q"]
