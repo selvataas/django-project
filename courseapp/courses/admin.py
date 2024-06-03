@@ -3,19 +3,28 @@ from .models import Course,Category
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title","isActive","slug",)
+    list_display = ("title","isActive","isHome","slug","category_list",)
     list_display_links = ("title", "slug",)
-    readonly_fields = ("slug",)
-    list_filter = ("title","isActive")
-    list_editable = ("isActive",)
+    prepopulated_fields = {"slug": ("title",),}
+    list_filter = ("title","isActive","isHome")
+    list_editable = ("isActive","isHome")
     search_fields = ("title","description")
+
+    def category_list(self, obj):
+        html = ""
+        for category in obj.categories.all():
+            html += category.name + " "
+        return html
     
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("name", "slug","course_count")
+    prepopulated_fields = {"slug": ("name",),}
 
+    def course_count(self,obj):
+        return obj.course_set.count()
 
 
 
