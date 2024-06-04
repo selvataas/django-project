@@ -2,7 +2,23 @@
 <div class="card mb-3">
     <div class="row">
         <div class="col-4">
-            <img class="img-fluid rounded-start" src="{% static 'courses/img/' add:course.imageUrl %}" alt="{{ course.title }}">
+            <img class="img-fluid rounded-start" src="{% static 'courses/img/' %}{{ course.imageUrl }}" alt="{{ course.title }}">
+        </div>
+        <div class="col-8">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description|truncatechars:15 }}</p>
+                <p>{{ course.date }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} {% load static %}
+<div class="card mb-3">
+    <div class="row">
+        <div class="col-4">
+            <img class="img-fluid rounded-start" src="{% static 'courses/img' add:course.imageUrl %}" alt="{{ course.title }}">
         </div>
         <div class="col-8">
             <div class="card-body">
@@ -15,7 +31,7 @@
 </div>
 
 
-<spanp>
+<spanp> {% endcomment %}
     {% comment %} {% if course.isUpdated %}
         <span class="badge bg-success">Güncellendi</span> 
     {% else %}

@@ -1,5 +1,7 @@
 from datetime import date,datetime
 from django.shortcuts import get_object_or_404, redirect, render
+
+from courses.forms import CourseCreateForm
 from .models import Course, Category
 from django.core.paginator import Paginator
 
@@ -14,7 +16,7 @@ db = {
         {
             "title":"javascript kursu",
             "description":"javascript kurs açıklaması",
-            "imageUrl":"https://www.bing.com/images/search?view=detailV2&ccid=jRmiVqe4&id=88887D85E76E91D304C542199E1881A5B877A1FF&thid=OIP.jRmiVqe48aRlay0NUb_r2QAAAA&mediaurl=https%3A%2F%2Fhoudoukyokucho.com%2Fwp-content%2Fuploads%2F2022%2F05%2FJavaScript-2.png&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.8d19a256a7b8f1a4656b2d0d51bfebd9%3Frik%3D%252f6F3uKWBGJ4ZQg%26pid%3DImgRaw%26r%3D0&exph=236&expw=400&q=javascript&simid=608043335525471524&form=IRPRST&ck=1C43CFEC16FEA252872A7A0CE9143257&selectedindex=0&itb=0&ajaxhist=0&ajaxserp=0&cit=ccid_rcbv%2BbKz*cp_2321E703672A4E069AAA604685C5A10A*mid_9162A91C3FB6C5B7FD0E8F0781947416A5850BEE*simid_608041003353062594*thid_OIP.rcbv-bKzGSyPbclJg6moBwEsB4&vt=2&sim=11",
+            "imageUrl":"https://th.bing.com/th/id/OIP.jRmiVqe48aRlay0NUb_r2QAAAA?rs=1&pid=ImgDetMain",
             "slug":"javascript-kursu",
             "date":datetime.now(),
             "isActive": True,
@@ -25,7 +27,7 @@ db = {
             "description":"python kurs açıklaması",
             "imageUrl":"https://th.bing.com/th/id/OIP.ujO3LNmVkgw8umROCXKx4QHaEK?rs=1&pid=ImgDetMain",
             "slug":"python-kursu",
-            "date":date(2022,9,10),
+            "date":datetime.now(),
             "isActive":  False,
             "isUpdated": False
 
@@ -35,7 +37,7 @@ db = {
             "description":"web geliştirme kurs açıklaması",
             "imageUrl":"https://th.bing.com/th/id/R.57e269d772efb557362226367e9e2a63?rik=4E4g719M7vqo1w&pid=ImgRaw&r=0",
             "slug":"web-gelistirme-kursu",
-            "date":date(2022,8,10),
+            "date":datetime.now(),
             "isActive": True,
             "isUpdated": True
         },
@@ -61,24 +63,41 @@ def index(request):
 
 def create_course(request):
     if request.method == "POST":
-        title=request.POST["title"]
-        imageUrl=request.POST["imageUrl"]
-        description = request.POST["description"]
-        slug = request.POST["slug"]
-        isActive = request.POST.get("isActive", False)
-        isHome = request.POST.get("isHome", False)
-        print(title, description, slug, isActive, isHome)
+        form = CourseCreateForm(request.POST)
 
-        if isActive == "on":
-            isActive = True
-        
-        if isHome == "on":
-            isHome = True
+        if form.is_valid():
+            form.save()
+            return redirect("/kurslar")
+    else:
+        form = CourseCreateForm()
+    return render(request, "courses/create_course.html", {"form": form})
 
-        kurs=Course(title=title, imageUrl=imageUrl, description=description, slug=slug, isActive=isActive, isHome=isHome)
-        kurs.save()
-        return redirect("/kurslar")
-    return render(request, "courses/create_course.html")
+def course_list(request):
+    kurslar = Course.objects.all()
+    return render(request, 'courses/index.html', {
+         'courses': kurslar
+     })
+
+        # kurs = Course(
+            #     title=form.cleaned_data[" title"],
+            #     description=form.cleaned_data["description"],
+            #     imageUrl=form.cleaned_data["imageUrl"],
+            #     slug=form.cleaned_data["slug"])
+            # kurs.save()   
+
+
+        # kurs=Course(title=title, imageUrl=imageUrl, description=description, slug=slug, isActive=isActive, isHome=isHome)
+        # kurs.save()
+        # return redirect("/kurslar")
+
+ 
+
+def upload(request):
+    if request.method == "POST":
+        uploaded_image = request.FILES['image']
+        print(uploaded_image)
+        return render(request, "courses/success.html")
+    return render(request, "courses/upload.html")
 
 def search(request):
     if "q" in request.GET and request.GET["q"] != "": 
