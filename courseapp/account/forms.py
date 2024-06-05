@@ -1,6 +1,5 @@
 from typing import Any
 from django import forms
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import widgets
 from django.contrib import messages
@@ -19,8 +18,8 @@ class LoginUserForm(AuthenticationForm):
 
         return username
     
-    def confirm_login_allowed(self, user):
-        if user.username.startswith("s"):
-            raise forms.ValidationError("bu kullanıcı adı ile login olamazsınız")
+    # def confirm_login_allowed(self, user):
+    #     if user.username.startswith("s"):
+    #         raise forms.ValidationError("bu kullanıcı adı ile login olamazsınız")
         
     
