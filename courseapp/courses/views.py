@@ -1,9 +1,11 @@
 from datetime import date,datetime
 from django.shortcuts import get_object_or_404, redirect, render
 
-from courses.forms import CourseCreateForm
-from .models import Course, Category
+from courses.forms import CourseCreateForm, UploadForm
+from .models import Course, Category, UploadModel
 from django.core.paginator import Paginator
+import random, os
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 data = {
     "programlama":"programlama kategorisine ait kurslar",
@@ -61,7 +63,14 @@ def index(request):
          'courses': kurslar
      })
 
+def isAdmin(user):
+    return user.is_superuser
+
+@user_passes_test(isAdmin)
 def create_course(request):
+    if not request.user.is_superuser:
+        return redirect('index')
+    
     if request.method == "POST":
         form = CourseCreateForm(request.POST)
 
@@ -72,6 +81,7 @@ def create_course(request):
         form = CourseCreateForm()
     return render(request, "courses/create_course.html", {"form": form})
 
+@user_passes_test(isAdmin)
 def course_list(request):
     kurslar = Course.objects.all()
     return render(request, 'courses/index.html', {
@@ -94,10 +104,18 @@ def course_list(request):
 
 def upload(request):
     if request.method == "POST":
-        uploaded_image = request.FILES['image']
-        print(uploaded_image)
-        return render(request, "courses/success.html")
-    return render(request, "courses/upload.html")
+        form = UploadForm(request.POST, request.FILES)
+
+        if form.is_valid(): 
+            model = UploadModel(image=request.FILES["image"])
+            model.save()
+        # print(uploaded_image)
+            return render(request, "courses/success.html")
+    else:
+        form = UploadForm()
+    return render(request, "courses/upload.html", {"form": form})
+
+
 
 def search(request):
     if "q" in request.GET and request.GET["q"] != "": 
