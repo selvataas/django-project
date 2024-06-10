@@ -1,8 +1,11 @@
 from typing import Any
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 from django.forms import widgets
 from django.contrib import messages
+from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 
 class LoginUserForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -22,4 +25,28 @@ class LoginUserForm(AuthenticationForm):
     #     if user.username.startswith("s"):
     #         raise forms.ValidationError("bu kullanıcı adı ile login olamazsınız")
         
+class NewUserForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(NewUserForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
     
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'wide-form-field'
+    
+    # class NewUserForm(UserCreationForm):
+    #     class Meta:
+    #         model = User
+    #         fields = ("username", "email",)

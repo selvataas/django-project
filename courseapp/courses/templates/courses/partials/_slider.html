@@ -1,0 +1,32 @@
+{% load static %}
+
+<div id="slider" class="carousel slide mb-3" databs-ride="carousel">
+    <div class="carousel-indicators">
+        
+        <button type="button" data-bs-target="#slider" data-bs-slide-to="0" class="active"></button>
+        {% comment %} <button type="button" data-bs-target="#slider" data-bs-slide-to="1" ></button>
+        <button type="button" data-bs-target="#slider" data-bs-slide-to="2" ></button> {% endcomment %}
+    </div>
+    <div class="carousel-inner">
+
+        {% for slide in sliders  %}
+        <div class="carousel-item active">
+            <img src="{{ slide.image.url }}" alt="" class="d-block w-100">
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" data-bs-target="#slider" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-prev" data-bs-target="#slider" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div> 
+
+{% comment %} 
+<div class="carousel-item active">
+    <img src="{% static 'courses/img/OIP.jpeg' %}" alt="" class="d-block w-100">
+</div>
+<div class="carousel-item active">
+    <img src="{% static 'courses/img/OIP.jpeg' %}" alt="" class="d-block w-100">
+</div> {% endcomment %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+# from ckeditor.field import
 
 class Category(models.Model):
     name = models.CharField(max_length=40)
@@ -19,13 +20,25 @@ class Course(models.Model):
     # category = models.ForeignKey(Category, default=1, on_delete=models.CASCADE, related_name="kurslar")  
     categories = models.ManyToManyField(Category)
 
+    def __str__(self):
+        return f"{self.title}"
+    
+class Slider(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="images")
+    is_Active = models.BooleanField(default=False)
+    course = models.OneToOneField(Course, on_delete=models.SET_NULL, null=True, blank=True)
+
+
+    def __str__(self):
+        return f"{self.title}"
+
+
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)
     #     super().save(args,kwargs)
 
-    def __str__(self):
-        return f"{self.title}"
-    
+
 class UploadModel(models.Model):
     image = models.ImageField(upload_to="images")
 

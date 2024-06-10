@@ -2,7 +2,7 @@ from datetime import date,datetime
 from django.shortcuts import get_object_or_404, redirect, render
 
 from courses.forms import CourseCreateForm, UploadForm
-from .models import Course, Category, UploadModel
+from .models import Course, Category, Slider, UploadModel
 from django.core.paginator import Paginator
 import random, os
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -18,7 +18,7 @@ db = {
         {
             "title":"javascript kursu",
             "description":"javascript kurs açıklaması",
-            "imageUrl":"https://th.bing.com/th/id/OIP.jRmiVqe48aRlay0NUb_r2QAAAA?rs=1&pid=ImgDetMain",
+            "imageUrl":"1.jpg",
             "slug":"javascript-kursu",
             "date":datetime.now(),
             "isActive": True,
@@ -27,7 +27,7 @@ db = {
         {
             "title":"python kursu",
             "description":"python kurs açıklaması",
-            "imageUrl":"https://th.bing.com/th/id/OIP.ujO3LNmVkgw8umROCXKx4QHaEK?rs=1&pid=ImgDetMain",
+            "imageUrl":"2.png",
             "slug":"python-kursu",
             "date":datetime.now(),
             "isActive":  False,
@@ -37,7 +37,7 @@ db = {
         {
              "title":"web geliştirme kursu",
             "description":"web geliştirme kurs açıklaması",
-            "imageUrl":"https://th.bing.com/th/id/R.57e269d772efb557362226367e9e2a63?rik=4E4g719M7vqo1w&pid=ImgRaw&r=0",
+            "imageUrl":"3.jpg",
             "slug":"web-gelistirme-kursu",
             "date":datetime.now(),
             "isActive": True,
@@ -55,12 +55,14 @@ def index(request):
     # list comphension
     kurslar = Course.objects.filter(isActive=1, isHome=1)
     kategoriler = Category.objects.all()
+    # sliders = Slider.objects.filter(is_active=False)
     #  for kurs in db["courses"]:
     #      if kurs ["isActive"] == True:
     #          kurslar.append(kurs)
     return render(request, 'courses/index.html', {
          'categories': kategoriler,
-         'courses': kurslar
+         'courses': kurslar,
+        #  'sliders' : sliders
      })
 
 def isAdmin(user):
